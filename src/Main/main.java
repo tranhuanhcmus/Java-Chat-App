@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.Map;
 
 import javax.swing.GroupLayout;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,8 +18,14 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import event.EventImageView;
+import event.PublicEvent;
 import form.Home;
 import swing.Resizerwindow;
+import java.awt.CardLayout;
+import form.View_Image;
+import net.miginfocom.swing.MigLayout;
+import java.awt.Component;
 
 public class main extends JFrame {
 
@@ -29,6 +36,7 @@ public class main extends JFrame {
 	private JButton cmdMinimize;
 	private Home home1;
 	private JPanel title;
+	private View_Image view_Image;
 
 	public main() {
 		initComponents();
@@ -42,6 +50,23 @@ public class main extends JFrame {
 		com.setMinimumSize(new Dimension(800, 500));
 		com.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
 		com.setSnapSize(new Dimension(10, 10));
+		view_Image.setVisible(false);
+		home1.setVisible(true);
+		initEvent();
+	}
+
+	private void initEvent() {
+		PublicEvent.getInstance().addEventImageView(new EventImageView() {
+			@Override
+			public void viewImage(Icon image) {
+				view_Image.viewImage(image);
+			}
+
+			@Override
+			public void saveImage(Icon image) {
+				view_Image.saveImage(image);
+			}
+		});
 	}
 
 	/**
@@ -114,9 +139,8 @@ public class main extends JFrame {
 						.addComponent(cmdClose, GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
 						.addComponent(cmdMinimize, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 				.addGap(0, 0, 0)));
-
-		body.setLayout(new java.awt.BorderLayout());
-		body.add(home1, java.awt.BorderLayout.CENTER);
+		body.setLayout(new CardLayout(0, 0));
+		body.add(home1, "name_520431889883800");
 
 		GroupLayout backgroundLayout = new GroupLayout(background);
 		background.setLayout(backgroundLayout);
@@ -131,6 +155,12 @@ public class main extends JFrame {
 								GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(body, GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE).addContainerGap()));
+
+		view_Image = new View_Image();
+		view_Image.setAutoscrolls(true);
+		body.setLayer(view_Image, 10);
+
+		body.add(view_Image, "name_520431915700500");
 
 		GroupLayout borderLayout = new GroupLayout(border);
 		border.setLayout(borderLayout);

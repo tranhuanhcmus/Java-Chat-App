@@ -2,6 +2,8 @@ package components;
 
 import java.awt.Color;
 
+import javax.swing.Icon;
+
 public class Chat_Right extends javax.swing.JLayeredPane {
 
 	private Chat_Item txt;
@@ -12,9 +14,19 @@ public class Chat_Right extends javax.swing.JLayeredPane {
 	}
 
 	public void setText(String text) {
+		if (text.equals("")) {
+			txt.hideText();
+		}
 		txt.setText(text);
-		txt.setTime("10:30 PM"); // Testing
-		txt.seen();
+
+	}
+
+	public void setTime() {
+		txt.setTime("10:35 PM"); // Testing
+	}
+
+	public void setImage(Icon... images) {
+		txt.setImage(true, images);
 	}
 
 	@SuppressWarnings("unchecked")

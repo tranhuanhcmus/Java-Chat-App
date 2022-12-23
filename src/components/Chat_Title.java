@@ -1,6 +1,7 @@
 package components;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
@@ -53,7 +54,8 @@ public class Chat_Title extends JPanel {
 		layer.add(lbName);
 
 		lbStatus.setForeground(new java.awt.Color(40, 147, 59));
-		lbStatus.setText("Active now");
+		lbStatus.setText("Active now ");
+
 		layer.add(lbStatus);
 
 		GroupLayout layout = new GroupLayout(this);

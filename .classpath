@@ -11,6 +11,7 @@
 			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/ASUS/Desktop/miglayout-4.0.jar"/>
+	<classpathentry kind="lib" path="D:/WorkingApp/Eclipse/workspace/ChatAppProject/miglayout-4.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
