@@ -2,6 +2,8 @@ package form;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
@@ -13,7 +15,11 @@ import javax.swing.LayoutStyle;
 
 import components.Item_people;
 import components.MenuButton;
+import event.EventMenuLeft;
+import event.PublicEvent;
+import model.Model_User_Account;
 import net.miginfocom.swing.MigLayout;
+import swing.ScrollBar;
 
 public class Menu_left extends javax.swing.JPanel {
 
@@ -23,49 +29,61 @@ public class Menu_left extends javax.swing.JPanel {
 	private MenuButton menuBox;
 	private JLayeredPane menuList;
 	private JScrollPane sp;
-
+	private List<Model_User_Account> userAccount;
+	
 	public Menu_left() {
 		initComponents();
 		init();
 	}
 
 	private void init() {
-		sp.setVerticalScrollBar(new JScrollBar());
-		menuList.setLayout(new MigLayout("fillx", "0[]0", "0[]0"));
-		showMessage();
-	}
+        sp.setVerticalScrollBar(new ScrollBar());
+        menuList.setLayout(new MigLayout("fillx", "0[]0", "0[]0"));
+        userAccount = new ArrayList<>();
+        PublicEvent.getInstance().addEventMenuLeft(new EventMenuLeft() {
+            @Override
+            public void newUser(List<Model_User_Account> users) {
+                for (Model_User_Account d : users) {
+                    userAccount.add(d);
+                    menuList.add(new Item_people(d.getUserName()), "wrap");
+                    refreshMenuList();
+                }
+            }
+        });
+        showMessage();
+    }
 
-	private void showMessage() {
-		// test data
-		menuList.removeAll();
-		for (int i = 0; i < 20; i++) {
-			menuList.add(new Item_people("People " + i), "wrap");
-		}
-		refreshMenuList();
-	}
+    private void showMessage() {
+        //  test data
+        menuList.removeAll();
+        for (Model_User_Account d : userAccount) {
+            menuList.add(new Item_people(d.getUserName()), "wrap");
+        }
+        refreshMenuList();
+    }
 
-	private void showGroup() {
-		// test data
-		menuList.removeAll();
-		for (int i = 0; i < 5; i++) {
-			menuList.add(new Item_people("Group " + i), "wrap");
-		}
-		refreshMenuList();
-	}
+    private void showGroup() {
+        //  test data
+        menuList.removeAll();
+        for (int i = 0; i < 5; i++) {
+            menuList.add(new Item_people("Group " + i), "wrap");
+        }
+        refreshMenuList();
+    }
 
-	private void showBox() {
-		// test data
-		menuList.removeAll();
-		for (int i = 0; i < 10; i++) {
-			menuList.add(new Item_people("Box " + i), "wrap");
-		}
-		refreshMenuList();
-	}
+    private void showBox() {
+        //  test data
+        menuList.removeAll();
+        for (int i = 0; i < 10; i++) {
+            menuList.add(new Item_people("Box " + i), "wrap");
+        }
+        refreshMenuList();
+    }
 
-	private void refreshMenuList() {
-		menuList.repaint();
-		menuList.revalidate();
-	}
+    private void refreshMenuList() {
+        menuList.repaint();
+        menuList.revalidate();
+    }
 
 	private void menuMessageActionPerformed(ActionEvent evt) {// GEN-FIRST:event_menuMessageActionPerformed
 		if (!menuMessage.isSelected()) {
