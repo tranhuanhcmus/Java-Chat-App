@@ -14,6 +14,7 @@ import event.PublicEvent;
 import io.socket.client.Ack;
 import model.Model_Message;
 import model.Model_Register;
+import model.Model_User_Account;
 import service.Service;
 import swing.PanelSlide;
 import swing.PictureBox;
@@ -64,24 +65,9 @@ public class Login extends JPanel {
 		
 		slide.setBackground(Color.WHITE);
 		PublicEvent.getInstance().addEventLogin(new EventLogin() {
-			
-			@Override
-			public void register(Model_Register data, EventMessage message) {
-                Service.getInstance().getClient().emit("register", data.toJsonObject(), new Ack() {
-                    @Override
-                    public void call(Object... os) {
-                        if (os.length > 0) {
-                            Model_Message ms = new Model_Message((boolean) os[0], os[1].toString());
-                            message.callMessage(ms);
-                            //  call message back when done register
-                        }
-                    }
-                });
-            }
-			
-			@Override
-			public void login() {
-				new Thread(new Runnable() {
+            @Override
+            public void login() {
+                new Thread(new Runnable() {
                     @Override
                     public void run() {
                         PublicEvent.getInstance().getEventMain().showLoading(true);
@@ -94,7 +80,25 @@ public class Login extends JPanel {
                         setVisible(false);
                     }
                 }).start();
-			}
+            }
+
+            @Override
+            public void register(Model_Register data, EventMessage message) {
+                Service.getInstance().getClient().emit("register", data.toJsonObject(), new Ack() {
+                    @Override
+                    public void call(Object... os) {
+                        if (os.length > 0) {
+                            Model_Message ms = new Model_Message((boolean) os[0], os[1].toString());
+                            message.callMessage(ms);
+                            if (ms.isAction()) {
+                                Model_User_Account user = new Model_User_Account(os[2]);
+                                Service.getInstance().setUser(user);
+                            }
+                            //  call message back when done register
+                        }
+                    }
+                });
+            }
 			
 			@Override
 			public void goRegister() {

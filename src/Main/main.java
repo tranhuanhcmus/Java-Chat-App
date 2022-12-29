@@ -71,33 +71,31 @@ public class main extends JFrame {
 	}
 
 	private void initEvent() {
-		PublicEvent.getInstance().addEventMain(new EventMain() {
+        PublicEvent.getInstance().addEventMain(new EventMain() {
+            @Override
+            public void showLoading(boolean show) {
+                loading.setVisible(show);
+            }
 
-			@Override
-			public void showLoading(boolean show) {
-				loading.setVisible(show);
-			}
+            @Override
+            public void initChat() {
+                home1.setVisible(true);
+                Service.getInstance().getClient().emit("list_user", Service.getInstance().getUser().getUserID());
+            }
+        });
+        PublicEvent.getInstance().addEventImageView(new EventImageView() {
+            @Override
+            public void viewImage(Icon image) {
+                view_Image.viewImage(image);
+            }
 
-			@Override
-			public void initChat() {
-				// TODO Auto-generated method stub
-				home1.setVisible(true);
-			}
-			
-			
-		});
-		PublicEvent.getInstance().addEventImageView(new EventImageView() {
-			@Override
-			public void viewImage(Icon image) {
-				view_Image.viewImage(image);
-			}
+            @Override
+            public void saveImage(Icon image) {
+                System.out.println("Save Image next update");
+            }
 
-			@Override
-			public void saveImage(Icon image) {
-				view_Image.saveImage(image);
-			}
-		});
-	}
+        });
+    }
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
