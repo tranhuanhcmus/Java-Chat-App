@@ -55,7 +55,7 @@ public class View_Image extends JComponent {
 				PublicEvent.getInstance().getEventImageView().saveImage(image);
 			}
 		});
-		cmdSave.setIcon(new ImageIcon(View_Image.class.getResource("../icon/save.png")));
+		cmdSave.setIcon(new ImageIcon(View_Image.class.getResource("/icon/save.png")));
 		cmdSave.setFocusable(false);
 
 		cmdSave.setBackground(Color.BLACK);
