@@ -1,6 +1,7 @@
 package form;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,6 @@ import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLayeredPane;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle;
 
@@ -30,60 +30,98 @@ public class Menu_left extends javax.swing.JPanel {
 	private JLayeredPane menuList;
 	private JScrollPane sp;
 	private List<Model_User_Account> userAccount;
-	
+
 	public Menu_left() {
 		initComponents();
 		init();
 	}
 
 	private void init() {
-        sp.setVerticalScrollBar(new ScrollBar());
-        menuList.setLayout(new MigLayout("fillx", "0[]0", "0[]0"));
-        userAccount = new ArrayList<>();
-        PublicEvent.getInstance().addEventMenuLeft(new EventMenuLeft() {
-            @Override
-            public void newUser(List<Model_User_Account> users) {
-                for (Model_User_Account d : users) {
-                    userAccount.add(d);
-                    menuList.add(new Item_people(d.getUserName()), "wrap");
-                    refreshMenuList();
-                }
-            }
-        });
-        showMessage();
-    }
+		sp.setVerticalScrollBar(new ScrollBar());
+		menuList.setLayout(new MigLayout("fillx", "0[]0", "0[]0"));
+		userAccount = new ArrayList<>();
+		PublicEvent.getInstance().addEventMenuLeft(new EventMenuLeft() {
+			@Override
+			public void newUser(List<Model_User_Account> users) {
+				for (Model_User_Account d : users) {
+					userAccount.add(d);
+					menuList.add(new Item_people(d), "wrap");
+					refreshMenuList();
+				}
+			}
 
-    private void showMessage() {
-        //  test data
-        menuList.removeAll();
-        for (Model_User_Account d : userAccount) {
-            menuList.add(new Item_people(d.getUserName()), "wrap");
-        }
-        refreshMenuList();
-    }
+			@Override
+			public void userConnect(int userID) {
+				for (Model_User_Account u : userAccount) {
+					if (u.getUserID() == userID) {
+						u.setStatus(true);
+						break;
+					}
+				}
+				if (menuMessage.isSelected()) {
+					for (Component com : menuList.getComponents()) {
+						Item_people item = (Item_people) com;
+						if (item.getUser().getUserID() == userID) {
+							item.updateStatus();
+							break;
+						}
+					}
+				}
+			}
 
-    private void showGroup() {
-        //  test data
-        menuList.removeAll();
-        for (int i = 0; i < 5; i++) {
-            menuList.add(new Item_people("Group " + i), "wrap");
-        }
-        refreshMenuList();
-    }
+			@Override
+			public void userDisconnect(int userID) {
+				for (Model_User_Account u : userAccount) {
+					if (u.getUserID() == userID) {
+						u.setStatus(false);
+						break;
+					}
+				}
+				if (menuMessage.isSelected()) {
+					for (Component com : menuList.getComponents()) {
+						Item_people item = (Item_people) com;
+						if (item.getUser().getUserID() == userID) {
+							item.updateStatus();
+							break;
+						}
+					}
+				}
+			}
+		});
+		showMessage();
+	}
 
-    private void showBox() {
-        //  test data
-        menuList.removeAll();
-        for (int i = 0; i < 10; i++) {
-            menuList.add(new Item_people("Box " + i), "wrap");
-        }
-        refreshMenuList();
-    }
+	private void showMessage() {
+		// test data
+		menuList.removeAll();
+		for (Model_User_Account d : userAccount) {
+			menuList.add(new Item_people(d), "wrap");
+		}
+		refreshMenuList();
+	}
 
-    private void refreshMenuList() {
-        menuList.repaint();
-        menuList.revalidate();
-    }
+	private void showGroup() {
+		// test data
+		menuList.removeAll();
+		for (int i = 0; i < 5; i++) {
+			menuList.add(new Item_people(null), "wrap");
+		}
+		refreshMenuList();
+	}
+
+	private void showBox() {
+		// test data
+		menuList.removeAll();
+		for (int i = 0; i < 10; i++) {
+			menuList.add(new Item_people(null), "wrap");
+		}
+		refreshMenuList();
+	}
+
+	private void refreshMenuList() {
+		menuList.repaint();
+		menuList.revalidate();
+	}
 
 	private void menuMessageActionPerformed(ActionEvent evt) {// GEN-FIRST:event_menuMessageActionPerformed
 		if (!menuMessage.isSelected()) {
