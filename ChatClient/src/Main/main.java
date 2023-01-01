@@ -1,5 +1,6 @@
 package Main;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -10,6 +11,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.Map;
 
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -24,18 +26,11 @@ import event.EventImageView;
 import event.EventMain;
 import event.PublicEvent;
 import form.Home;
-import swing.Resizerwindow;
-import java.awt.CardLayout;
-import form.View_Image;
-import net.miginfocom.swing.MigLayout;
-import service.Service;
-
-import java.awt.Component;
-import form.Login;
-import java.awt.BorderLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.GridLayout;
 import form.Loading;
+import form.Login;
+import form.View_Image;
+import service.Service;
+import swing.Resizerwindow;
 
 public class main extends JFrame {
 
@@ -49,7 +44,7 @@ public class main extends JFrame {
 	private View_Image view_Image;
 	private Login login;
 	private Loading loading;
-	
+
 	public main() {
 		initComponents();
 		init();
@@ -71,31 +66,32 @@ public class main extends JFrame {
 	}
 
 	private void initEvent() {
-        PublicEvent.getInstance().addEventMain(new EventMain() {
-            @Override
-            public void showLoading(boolean show) {
-                loading.setVisible(show);
-            }
+		PublicEvent.getInstance().addEventMain(new EventMain() {
+			@Override
+			public void showLoading(boolean show) {
+				loading.setVisible(show);
+			}
 
-            @Override
-            public void initChat() {
-                home1.setVisible(true);
-                Service.getInstance().getClient().emit("list_user", Service.getInstance().getUser().getUserID());
-            }
-        });
-        PublicEvent.getInstance().addEventImageView(new EventImageView() {
-            @Override
-            public void viewImage(Icon image) {
-                view_Image.viewImage(image);
-            }
+			@Override
+			public void initChat() {
+				home1.setVisible(true);
+				login.setVisible(false);
+				Service.getInstance().getClient().emit("list_user", Service.getInstance().getUser().getUserID());
+			}
+		});
+		PublicEvent.getInstance().addEventImageView(new EventImageView() {
+			@Override
+			public void viewImage(Icon image) {
+				view_Image.viewImage(image);
+			}
 
-            @Override
-            public void saveImage(Icon image) {
-                System.out.println("Save Image next update");
-            }
+			@Override
+			public void saveImage(Icon image) {
+				System.out.println("Save Image next update");
+			}
 
-        });
-    }
+		});
+	}
 
 	/**
 	 * This method is called from within the constructor to initialize the form.
@@ -118,7 +114,7 @@ public class main extends JFrame {
 		login = new Login();
 		loading = new Loading();
 		body.setLayer(loading, 0);
-		
+
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setUndecorated(true);
 
@@ -187,23 +183,19 @@ public class main extends JFrame {
 								GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(body, GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE).addContainerGap()));
-		
-		
+
 		view_Image = new View_Image();
 		view_Image.setAutoscrolls(true);
 		body.setLayer(view_Image, 10);
 
 		body.add(view_Image, "name_520431915700500");
 
-		
 		body.setLayer(login, 0);
 		body.add(login, "name_169739866587700");
 		login.setLayout(null);
-		
-		
+
 		body.add(loading, "name_260498832457000");
-		
-		
+
 		GroupLayout borderLayout = new GroupLayout(border);
 		border.setLayout(borderLayout);
 		borderLayout.setHorizontalGroup(borderLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -216,14 +208,10 @@ public class main extends JFrame {
 						.addGap(1, 1, 1)));
 
 		GroupLayout layout = new GroupLayout(getContentPane());
-		layout.setHorizontalGroup(
-			layout.createParallelGroup(Alignment.LEADING)
-				.addComponent(border, GroupLayout.DEFAULT_SIZE, 1232, Short.MAX_VALUE)
-		);
-		layout.setVerticalGroup(
-			layout.createParallelGroup(Alignment.LEADING)
-				.addComponent(border, GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
-		);
+		layout.setHorizontalGroup(layout.createParallelGroup(Alignment.LEADING).addComponent(border,
+				GroupLayout.DEFAULT_SIZE, 1232, Short.MAX_VALUE));
+		layout.setVerticalGroup(layout.createParallelGroup(Alignment.LEADING).addComponent(border,
+				GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE));
 		getContentPane().setLayout(layout);
 
 		pack();
