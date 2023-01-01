@@ -38,7 +38,9 @@ public class Service {
 					for (Object o : os) {
 						Model_User_Account u = new Model_User_Account(o);
 						if (u.getUserID() != user.getUserID()) {
+
 							users.add(u);
+
 						}
 					}
 					PublicEvent.getInstance().getEventMenuLeft().newUser(users);
@@ -49,6 +51,8 @@ public class Service {
 				public void call(Object... os) {
 					int userID = (Integer) os[0];
 					boolean status = (Boolean) os[1];
+					System.out.println(userID);
+					System.out.println(status);
 					if (status) {
 						// connect
 						PublicEvent.getInstance().getEventMenuLeft().userConnect(userID);

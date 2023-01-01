@@ -106,12 +106,10 @@ public class ServiceUser {
 
 	public Model_User_Account login(Model_Login login) throws SQLException {
 		Model_User_Account data = null;
-		System.out.print(login.getUserName());
-		System.out.print(login.getPassword());
 		PreparedStatement p = con.prepareStatement(
 				"select userid, user_account.username, gender, imageString from user join user_account using (userid) where"
 						+ " user.username = BINARY(?) and user.password = BINARY(?) and user_account.status='1'");
-		System.out.print(login.getPassword());
+
 		p.setString(1, login.getUserName());
 		p.setString(2, login.getPassword());
 		ResultSet r = p.executeQuery();
@@ -120,8 +118,9 @@ public class ServiceUser {
 			String userName = r.getString(2);
 			String gender = r.getString(3);
 			String image = r.getString(4);
-			System.out.print(userName);
-			data = new Model_User_Account(userID, userName, gender, image, checkUserStatus(userID));
+			data = new Model_User_Account(userID, userName, gender, image, true);
+			System.out.println(data.getUserName());
+
 		}
 		r.close();
 		p.close();

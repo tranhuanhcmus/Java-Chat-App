@@ -44,6 +44,7 @@ public class Menu_left extends javax.swing.JPanel {
 			@Override
 			public void newUser(List<Model_User_Account> users) {
 				for (Model_User_Account d : users) {
+
 					userAccount.add(d);
 					menuList.add(new Item_people(d), "wrap");
 					refreshMenuList();
@@ -95,7 +96,7 @@ public class Menu_left extends javax.swing.JPanel {
 		// test data
 		menuList.removeAll();
 		for (Model_User_Account d : userAccount) {
-			menuList.add(new Item_people(d), "wrap");
+			menuList.add(new Item_people(null), "wrap");
 		}
 		refreshMenuList();
 	}

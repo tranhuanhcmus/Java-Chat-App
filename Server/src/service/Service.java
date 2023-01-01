@@ -72,6 +72,7 @@ public class Service {
 					ar.sendAckData(true, login);
 					addClient(sioc, login);
 					userConnect(login.getUserID());
+
 				} else {
 					ar.sendAckData(false);
 				}
@@ -83,6 +84,9 @@ public class Service {
 				try {
 					List<Model_User_Account> list = serviceUser.getUser(userID);
 					sioc.sendEvent("list_user", list.toArray());
+					for (Model_User_Account i : list) {
+						System.out.println(i.isStatus());
+					}
 				} catch (SQLException e) {
 					System.err.println(e);
 				}

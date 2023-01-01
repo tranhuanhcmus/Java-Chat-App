@@ -20,13 +20,12 @@ public class Item_people extends javax.swing.JPanel {
 		return user;
 	}
 
-	private final Model_User_Account user;
+	private Model_User_Account user;
 
 	public Item_people(Model_User_Account user) {
 		this.user = user;
 		initComponents();
 		lb.setText(user.getUserName());
-		System.out.print(user.isStatus());
 		activeStatus.setActive(user.isStatus());
 		init();
 	}
@@ -49,9 +48,6 @@ public class Item_people extends javax.swing.JPanel {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
-	// <editor-fold defaultstate="collapsed" desc="Generated
-	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
 		imageAvatar1 = new swing.ImageAvatar();
@@ -101,9 +97,5 @@ public class Item_people extends javax.swing.JPanel {
 								.addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 44,
 										javax.swing.GroupLayout.PREFERRED_SIZE))
 						.addGap(3, 3, 3)));
-	}// </editor-fold>//GEN-END:initComponents
-
-	// Variables declaration - do not modify//GEN-BEGIN:variables
-
-	// End of variables declaration//GEN-END:variables
+	}
 }
