@@ -6,9 +6,12 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JScrollBar;
 
+import app.MessageType;
+import emoji.Emoji;
+import model.Model_Receive_Message;
+import model.Model_Send_Message;
 import net.miginfocom.swing.MigLayout;
 
 public class Chat_Body extends javax.swing.JPanel {
@@ -19,23 +22,6 @@ public class Chat_Body extends javax.swing.JPanel {
 	public Chat_Body() {
 		initComponents();
 		init();
-		addItemRight(
-				"Send a text message to a group of contacts. Include photos, personalize your texts, and track who clicked your links.",
-				new ImageIcon(getClass().getResource("/Test/My_dog.jpg")),
-				new ImageIcon(getClass().getResource("/Test/og.jpg")));
-		addItemRight("hello\nHi");
-		addItemLeft(
-				"Simpletext started as a passion project because I couldn’t find what I was looking for. Most apps were trying to do too much and ended up bloated with features I don’t need. So I built Simpletext based on a simple premise — what if there’s an app that refuses to do more, choosing instead to do just one thing, and do it well? For Simpletext, that one thing is writing.",
-				"aa");
-		addItemLeft("hello\nerererew\newewe", "aaa");
-		addItemRight("hello\nerererew\newewe");
-		addItemLeft(
-				"Simpletext started as a passion project because I couldn’t find what I was looking for. Most apps were trying to do too much and ended up bloated with features I don’t need. So I built Simpletext based on a simple premise — what if there’s an app that refuses to do more, choosing instead to do just one thing, and do it well? For Simpletext, that one thing is writing.",
-				"aa");
-		addDate("23/12/2022");
-		addItemLeft("", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new ImageIcon(getClass().getResource("/Test/My_dog.jpg")),
-				new ImageIcon(getClass().getResource("/Test/My_dog.jpg")));
-		addItemRight("hello\nerererew\newewe", new ImageIcon(getClass().getResource("/Test/eagle.jpg")));
 
 	}
 
@@ -45,38 +31,81 @@ public class Chat_Body extends javax.swing.JPanel {
 		sp.getVerticalScrollBar().setBackground(Color.WHITE);
 	}
 
-	public void addItemLeft(String text, String user, Icon... images) {
+	public void addItemLeft(String text, String user, Icon... image) {
 		Chat_Left_With_Profile item = new Chat_Left_With_Profile();
-
 		item.setText(text);
-
-		item.setImage(images);
+		item.setImage(image);
 		item.setTime();
 		item.setUserProfile(user);
-		body.add(item, "wrap, w ::80%");
+		body.add(item, "wrap, w 100::80%");
 		// ::80% set max with 80%
 		body.repaint();
 		body.revalidate();
 	}
 
-	public void addItemRight(String text, Icon... images) {
+	public void addItemLeft(Model_Receive_Message data) {
+		if (data.getMessageType() == MessageType.TEXT) {
+			Chat_Left_With_Profile item = new Chat_Left_With_Profile();
+			item.setText(data.getText());
+
+			item.setTime();
+
+			body.add(item, "wrap, w 100::80%");
+			// ::80% set max with 80%
+		} else {
+			Chat_Left_With_Profile item = new Chat_Left_With_Profile();
+			item.setEmoji(Emoji.getInstance().getImoji(Integer.valueOf(data.getText())).getIcon());
+
+			item.setTime();
+
+			body.add(item, "wrap, w 100::80%");
+			// ::80% set max with 80%
+		}
+		repaint();
+		revalidate();
+	}
+
+	public void addItemRight(String text, Icon... image) {
+
 		Chat_Right item = new Chat_Right();
 		item.setText(text);
-		item.setImage(images);
-		item.setTime();
-		body.add(item, "wrap, al right, w ::80%");
+		item.setImage(image);
+		body.add(item, "wrap, al right, w 100::80%");
 		// ::80% set max with 80%
 		body.repaint();
 		body.revalidate();
+		item.setTime();
 		scrollToBottom();
 	}
 
-	public void addDate(String date) {
-		Chat_date item = new Chat_date();
-		item.setDate(date);
-		body.add(item, "wrap, al center");
-		body.repaint();
-		body.revalidate();
+	public void clearChat() {
+		body.removeAll();
+		repaint();
+		revalidate();
+	}
+
+	public void addItemRight(Model_Send_Message data) {
+
+		if (data.getMessageType() == MessageType.TEXT) {
+			Chat_Right item = new Chat_Right();
+			item.setText(data.getText());
+
+			item.setTime();
+
+			body.add(item, "wrap, al right,w 100::80%");
+			// ::80% set max with 80%
+		} else {
+			Chat_Right item = new Chat_Right();
+			item.setEmoji(Emoji.getInstance().getImoji(Integer.valueOf(data.getText())).getIcon());
+
+			item.setTime();
+
+			body.add(item, "wrap, al right, w 100::80%");
+			// ::80% set max with 80%
+		}
+		repaint();
+		revalidate();
+		scrollToBottom();
 	}
 
 	@SuppressWarnings("unchecked")

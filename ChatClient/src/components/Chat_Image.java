@@ -28,11 +28,11 @@ public class Chat_Image extends javax.swing.JLayeredPane {
 
 //	 Icon... is multi arguments
 	public void addImage(Icon... images) {
-		for (Icon i : images) {
+		for (Icon image : images) {
 			PictureBox pic = new PictureBox();
-			pic.setPreferredSize(getAutoSize(i, 200, 200));
-			pic.setImage(i);
-			addEvent(pic, i);
+			pic.setPreferredSize(getAutoSize(image, 200, 200));
+			pic.setImage(image);
+			addEvent(pic, image);
 			add(pic, "wrap");
 		}
 	}

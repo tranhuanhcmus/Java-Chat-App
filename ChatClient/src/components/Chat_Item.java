@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.text.DateFormat;
+import java.util.Date;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -28,34 +30,57 @@ public class Chat_Item extends javax.swing.JLayeredPane {
 		txt.setOpaque(false);
 	}
 
-	public void setText(String text) {
+	public void setUserProfile(String user) {
+		JLayeredPane layer = new JLayeredPane();
+		layer.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		layer.setBorder(new EmptyBorder(10, 10, 0, 10));
+		JButton cmd = new JButton(user);
+		cmd.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		cmd.setBorder(null);
+		cmd.setContentAreaFilled(false);
+		cmd.setFocusable(false);
+		cmd.setForeground(new Color(30, 121, 213));
+		cmd.setFont(new java.awt.Font("sansserif", 1, 13));
+		txt.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
+		layer.add(cmd);
+		add(layer, 0);
+	}
 
+	public void setText(String text) {
 		txt.setText(text);
 	}
 
-	public void setTime(String time) {
+	public void setTime() {
 		JLayeredPane layer = new JLayeredPane();
 		layer.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
 		layer.setBorder(new EmptyBorder(0, 5, 10, 5));
-		label = new JLabel(time);
+		label = new JLabel(DateFormat.getDateTimeInstance().format(new Date()));
 		label.setForeground(new Color(110, 110, 110));
 		label.setHorizontalTextPosition(JLabel.LEFT);
 		layer.add(label);
 		add(layer);
 	}
 
-	public void setImage(boolean right, Icon... images) {
-		if (images.length > 0) {
+	public void setImage(boolean right, Icon... image) {
+		if (image.length > 0) {
 			JLayeredPane layer = new JLayeredPane();
 			layer.setLayout(new FlowLayout(right ? FlowLayout.RIGHT : FlowLayout.LEFT));
-			layer.setBorder(new EmptyBorder(0, 5, 10, 15));
+			layer.setBorder(new EmptyBorder(0, 5, 0, 5));
 			Chat_Image chatImage = new Chat_Image(right);
-			chatImage.addImage(images);
-
+			chatImage.addImage(image);
 			layer.add(chatImage);
 			add(layer);
 		}
+	}
 
+	public void setEmoji(boolean right, Icon icon) {
+		JLayeredPane layer = new JLayeredPane();
+		layer.setLayout(new FlowLayout(right ? FlowLayout.RIGHT : FlowLayout.LEFT));
+		layer.setBorder(new EmptyBorder(0, 5, 0, 5));
+
+		layer.add(new JLabel(icon));
+		add(layer);
+		setBackground(null);
 	}
 
 	public void sendSuccess() {
@@ -72,22 +97,6 @@ public class Chat_Item extends javax.swing.JLayeredPane {
 
 	public void hideText() {
 		txt.setVisible(false);
-	}
-
-	public void setUserProfile(String user) {
-		JLayeredPane layer = new JLayeredPane();
-		layer.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		layer.setBorder(new EmptyBorder(10, 10, 0, 10));
-		JButton cmd = new JButton(user);
-		cmd.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		cmd.setBorder(null);
-		cmd.setContentAreaFilled(false);
-		cmd.setFocusable(false);
-		cmd.setForeground(new Color(30, 121, 213));
-		cmd.setFont(new java.awt.Font("sansserif", 1, 13));
-		txt.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 10, 5, 10));
-		layer.add(cmd);
-		add(layer, 0);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -107,9 +116,12 @@ public class Chat_Item extends javax.swing.JLayeredPane {
 	@Override
 	protected void paintComponent(Graphics grphcs) {
 		Graphics2D g2 = (Graphics2D) grphcs;
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setColor(getBackground());
-		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+		if (getBackground() != null) {
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setColor(getBackground());
+			g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+		}
+
 		super.paintComponent(grphcs);
 	}
 

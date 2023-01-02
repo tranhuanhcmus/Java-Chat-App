@@ -8,6 +8,11 @@ import javax.swing.JLabel;
 
 import model.Model_User_Account;
 import swing.ActiveStatus;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+
+import event.PublicEvent;
 
 public class Item_people extends javax.swing.JPanel {
 
@@ -15,6 +20,8 @@ public class Item_people extends javax.swing.JPanel {
 	private swing.ImageAvatar imageAvatar1;
 	private JLabel lb;
 	private JLabel lbStatus;
+
+	private boolean mouseOver;
 
 	public Model_User_Account getUser() {
 		return user;
@@ -39,11 +46,20 @@ public class Item_people extends javax.swing.JPanel {
 			@Override
 			public void mouseEntered(MouseEvent me) {
 				setBackground(new Color(230, 230, 230));
+				mouseOver = true;
 			}
 
 			@Override
 			public void mouseExited(MouseEvent me) {
 				setBackground(new Color(242, 242, 242));
+				mouseOver = false;
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent me) {
+				if (mouseOver) {
+					PublicEvent.getInstance().getEventMain().selectUser(user);
+				}
 			}
 		});
 	}
@@ -65,37 +81,33 @@ public class Item_people extends javax.swing.JPanel {
 
 		lbStatus.setFont(new java.awt.Font("sansserif", 2, 12)); // NOI18N
 		lbStatus.setForeground(new java.awt.Color(117, 117, 117));
-		lbStatus.setText("Name");
+		lbStatus.setText("New User");
 
 		activeStatus.setActive(true);
 
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-		this.setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout
-				.createSequentialGroup()
-				.addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 44,
-						javax.swing.GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-				.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-						.addComponent(lb, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-						.addGroup(layout.createSequentialGroup().addComponent(lbStatus).addGap(3, 3, 3)
-								.addComponent(activeStatus, javax.swing.GroupLayout.PREFERRED_SIZE,
-										javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addGap(0, 0, Short.MAX_VALUE)))
+		layout.setHorizontalGroup(layout.createParallelGroup(Alignment.LEADING).addGroup(layout.createSequentialGroup()
+				.addComponent(imageAvatar1, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addGroup(layout.createParallelGroup(Alignment.LEADING)
+						.addComponent(lb, GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+						.addGroup(layout.createSequentialGroup()
+								.addComponent(lbStatus, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(activeStatus, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(0, 349, Short.MAX_VALUE)))
 				.addContainerGap()));
-		layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addGap(3, 3, 3)
-						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(layout.createSequentialGroup().addComponent(lb).addGap(6, 6, 6)
-										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(activeStatus, javax.swing.GroupLayout.Alignment.TRAILING,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(lbStatus, javax.swing.GroupLayout.Alignment.TRAILING,
-														javax.swing.GroupLayout.DEFAULT_SIZE,
-														javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-								.addComponent(imageAvatar1, javax.swing.GroupLayout.PREFERRED_SIZE, 44,
-										javax.swing.GroupLayout.PREFERRED_SIZE))
-						.addGap(3, 3, 3)));
+		layout.setVerticalGroup(layout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(layout.createSequentialGroup().addGap(3)
+						.addGroup(layout.createParallelGroup(Alignment.LEADING)
+								.addGroup(layout.createSequentialGroup().addComponent(lb).addGap(6)
+										.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+												.addComponent(lbStatus, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+												.addComponent(activeStatus, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
+														31, Short.MAX_VALUE)))
+								.addComponent(imageAvatar1, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
+						.addGap(3)));
+		this.setLayout(layout);
 	}
 }

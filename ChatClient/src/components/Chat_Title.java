@@ -1,18 +1,20 @@
 package components;
 
 import java.awt.Color;
-import java.awt.Dimension;
 
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+import model.Model_User_Account;
+
 public class Chat_Title extends JPanel {
 
 	/**
 	 * Creates new form Chat_Title
 	 */
+	private Model_User_Account user;
 	private JLayeredPane layer;
 	private JLabel lbName;
 	private JLabel lbStatus;
@@ -21,16 +23,37 @@ public class Chat_Title extends JPanel {
 		initComponents();
 	}
 
-	public void setUserName(String userName) {
-		lbName.setText(userName);
+	public Model_User_Account getUser() {
+		return this.user;
 	}
 
-	public void statusActive() {
+	public void setUserName(Model_User_Account user) {
+		this.user = user;
+		lbName.setText(user.getUserName());
+		if (user.isStatus()) {
+			statusActive();
+		} else {
+			setStatusText("Offline");
+		}
+	}
+
+	public void updateUser(Model_User_Account user) {
+		if (this.user == user) {
+			lbName.setText(user.getUserName());
+			if (user.isStatus()) {
+				statusActive();
+			} else {
+				setStatusText("Offline");
+			}
+		}
+	}
+
+	private void statusActive() {
 		lbStatus.setText("Active now");
 		lbStatus.setForeground(new java.awt.Color(40, 147, 59));
 	}
 
-	public void setStatusText(String text) {
+	private void setStatusText(String text) {
 		lbStatus.setText(text);
 		lbStatus.setForeground(new Color(160, 160, 160));
 	}

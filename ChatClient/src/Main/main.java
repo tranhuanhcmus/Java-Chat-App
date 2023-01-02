@@ -29,6 +29,7 @@ import form.Home;
 import form.Loading;
 import form.Login;
 import form.View_Image;
+import model.Model_User_Account;
 import service.Service;
 import swing.Resizerwindow;
 
@@ -77,6 +78,17 @@ public class main extends JFrame {
 				home1.setVisible(true);
 				login.setVisible(false);
 				Service.getInstance().getClient().emit("list_user", Service.getInstance().getUser().getUserID());
+			}
+
+			@Override
+			public void selectUser(Model_User_Account user) {
+				home1.setUser(user);
+			}
+
+			@Override
+			public void updateUser(Model_User_Account user) {
+				home1.updateUser(user);
+
 			}
 		});
 		PublicEvent.getInstance().addEventImageView(new EventImageView() {

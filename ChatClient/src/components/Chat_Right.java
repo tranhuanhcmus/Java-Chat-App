@@ -21,8 +21,13 @@ public class Chat_Right extends javax.swing.JLayeredPane {
 
 	}
 
+	public void setEmoji(Icon icon) {
+		txt.hideText();
+		txt.setEmoji(true, icon);
+	}
+
 	public void setTime() {
-		txt.setTime("10:35 PM"); // Testing
+		txt.setTime();
 	}
 
 	public void setImage(Icon... images) {

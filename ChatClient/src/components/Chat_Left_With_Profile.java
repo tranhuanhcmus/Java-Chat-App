@@ -9,6 +9,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLayeredPane;
 
+import model.Model_User_Account;
+import service.Service;
 import swing.ImageAvatar;
 
 public class Chat_Left_With_Profile extends JLayeredPane {
@@ -33,17 +35,23 @@ public class Chat_Left_With_Profile extends JLayeredPane {
 	public void setText(String text) {
 		if (text.equals("")) {
 			txt.hideText();
+		} else {
+			txt.setText(text);
 		}
-		txt.setText(text);
 
+	}
+
+	public void setImage(Icon... image) {
+		txt.setImage(false, image);
+	}
+
+	public void setEmoji(Icon icon) {
+		txt.hideText();
+		txt.setEmoji(false, icon);
 	}
 
 	public void setTime() {
-		txt.setTime("10:35 PM"); // Testing
-	}
-
-	public void setImage(Icon... images) {
-		txt.setImage(false, images);
+		txt.setTime(); // Testing
 	}
 
 	@SuppressWarnings("unchecked")
@@ -58,7 +66,8 @@ public class Chat_Left_With_Profile extends JLayeredPane {
 		setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
 		IaImage.setBorderSize(0);
-		IaImage.setImage(new ImageIcon(getClass().getResource("/Test/My_dog.jpg"))); // NOI18N
+
+		IaImage.setImage(new ImageIcon(getClass().getResource("/icon/user.png"))); // NOI18N
 		IaImage.setMaximumSize(new Dimension(31, 31));
 		IaImage.setMinimumSize(new Dimension(31, 31));
 		IaImage.setPreferredSize(new Dimension(31, 31));
