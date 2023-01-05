@@ -11,4 +11,6 @@ public interface EventLogin {
 	public void goRegister();
 
 	public void goLogin();
+
+	public void showMessage(String message);
 }

@@ -26,7 +26,6 @@ import event.EventImageView;
 import event.EventMain;
 import event.PublicEvent;
 import form.Home;
-import form.Loading;
 import form.Login;
 import form.View_Image;
 import model.Model_User_Account;
@@ -44,7 +43,6 @@ public class main extends JFrame {
 	private JPanel title;
 	private View_Image view_Image;
 	private Login login;
-	private Loading loading;
 
 	public main() {
 		initComponents();
@@ -61,27 +59,26 @@ public class main extends JFrame {
 		view_Image.setVisible(false);
 		home1.setVisible(false);
 		login.setVisible(true);
-		loading.setVisible(false);
 		initEvent();
 		Service.getInstance().startServer();
 	}
 
 	private void initEvent() {
 		PublicEvent.getInstance().addEventMain(new EventMain() {
-			@Override
-			public void showLoading(boolean show) {
-				loading.setVisible(show);
-			}
 
 			@Override
 			public void initChat() {
+				if (!Service.getInstance().getUser().equals(null)) {
+					int userId = Service.getInstance().getUser().getUserID();
+					Service.getInstance().getClient().emit("list_user", userId);
+				}
 				home1.setVisible(true);
 				login.setVisible(false);
-				Service.getInstance().getClient().emit("list_user", Service.getInstance().getUser().getUserID());
 			}
 
 			@Override
 			public void selectUser(Model_User_Account user) {
+
 				home1.setUser(user);
 			}
 
@@ -91,18 +88,7 @@ public class main extends JFrame {
 
 			}
 		});
-		PublicEvent.getInstance().addEventImageView(new EventImageView() {
-			@Override
-			public void viewImage(Icon image) {
-				view_Image.viewImage(image);
-			}
 
-			@Override
-			public void saveImage(Icon image) {
-				System.out.println("Save Image next update");
-			}
-
-		});
 	}
 
 	/**
@@ -124,8 +110,6 @@ public class main extends JFrame {
 		home1 = new form.Home();
 		body.setLayer(home1, 5);
 		login = new Login();
-		loading = new Loading();
-		body.setLayer(loading, 0);
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setUndecorated(true);
@@ -205,8 +189,6 @@ public class main extends JFrame {
 		body.setLayer(login, 0);
 		body.add(login, "name_169739866587700");
 		login.setLayout(null);
-
-		body.add(loading, "name_260498832457000");
 
 		GroupLayout borderLayout = new GroupLayout(border);
 		border.setLayout(borderLayout);

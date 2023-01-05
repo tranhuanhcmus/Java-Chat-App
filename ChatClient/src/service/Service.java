@@ -36,14 +36,15 @@ public class Service {
 				public void call(Object... os) {
 					// list user
 					List<Model_User_Account> users = new ArrayList<>();
+					System.out.println("info of: " + user.getUserName());
 					for (Object o : os) {
 						Model_User_Account u = new Model_User_Account(o);
+						System.out.println(u.getUserName() + ": " + u.isStatus());
 						if (u.getUserID() != user.getUserID()) {
-
 							users.add(u);
-
 						}
 					}
+					System.out.println("------------------------");
 					PublicEvent.getInstance().getEventMenuLeft().newUser(users);
 				}
 			});
@@ -52,8 +53,7 @@ public class Service {
 				public void call(Object... os) {
 					int userID = (Integer) os[0];
 					boolean status = (Boolean) os[1];
-					System.out.println(userID);
-					System.out.println(status);
+
 					if (status) {
 						// connect
 						PublicEvent.getInstance().getEventMenuLeft().userConnect(userID);

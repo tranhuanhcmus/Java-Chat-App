@@ -1,6 +1,7 @@
 package service;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,11 +34,9 @@ public class ServiceUser {
 			ResultSet r = p.executeQuery();
 
 			if (r.next()) {
-				System.out.println("ko co tk");
 				message.setAction(false);
 				message.setMessage("User Already Exist");
 			} else {
-				System.out.println("co tk");
 				message.setAction(true);
 			}
 			r.close();
@@ -56,17 +55,24 @@ public class ServiceUser {
 				r.close();
 				p.close();
 				// insert User Account
-				p = con.prepareStatement("INSERT INTO test.user_account (userid, username) values (?,?)",
+				p = con.prepareStatement(
+						"INSERT INTO test.user_account (userid, username,name,address,birth,gender) values (?,?,?,?,?,?)",
 						ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 				p.setInt(1, userid);
 				p.setString(2, data.getUserName());
+				p.setString(3, data.getName());
+				p.setString(4, data.getAddress());
+				p.setDate(5, data.getBirth());
+				p.setString(6, "men");
+
 				p.execute();
 				p.close();
 				con.commit();
 				con.setAutoCommit(true);
 				message.setAction(true);
 				message.setMessage("Ok");
-				message.setData(new Model_User_Account(userid, data.getUserName(), "", "", true));
+				message.setData(new Model_User_Account(userid, data.getUserName(), data.getName(), data.getBirth(),
+						data.getAddress(), true));
 			}
 
 		} catch (SQLException e) {
@@ -87,17 +93,20 @@ public class ServiceUser {
 	}
 
 	public List<Model_User_Account> getUser(int exitUser) throws SQLException {
+
 		List<Model_User_Account> list = new ArrayList<>();
 		PreparedStatement p = con.prepareStatement(
-				"select userid, username, gender, imageString from user_account where user_account.status ='1' and userid<>?");
+				"select userid, username, name, birth,address from user_account where user_account.status ='1' and userid<>?");
 		p.setInt(1, exitUser);
 		ResultSet r = p.executeQuery();
 		while (r.next()) {
 			int userid = r.getInt(1);
 			String userName = r.getString(2);
-			String gender = r.getString(3);
-			String image = r.getString(4);
-			list.add(new Model_User_Account(userid, userName, gender, image, checkUserStatus(userid)));
+			String name = r.getString(3);
+
+			Date birth = r.getDate(4);
+			String address = r.getString(5);
+			list.add(new Model_User_Account(userid, userName, name, birth, address, checkUserStatus(userid)));
 		}
 		r.close();
 		p.close();
@@ -107,7 +116,7 @@ public class ServiceUser {
 	public Model_User_Account login(Model_Login login) throws SQLException {
 		Model_User_Account data = null;
 		PreparedStatement p = con.prepareStatement(
-				"select userid, user_account.username, gender, imageString from user join user_account using (userid) where"
+				"select userid, user_account.username, name, birth,address from user join user_account using (userid) where"
 						+ " user.username = BINARY(?) and user.password = BINARY(?) and user_account.status='1'");
 
 		p.setString(1, login.getUserName());
@@ -116,10 +125,10 @@ public class ServiceUser {
 		if (r.next()) {
 			int userID = r.getInt(1);
 			String userName = r.getString(2);
-			String gender = r.getString(3);
-			String image = r.getString(4);
-			data = new Model_User_Account(userID, userName, gender, image, true);
-			System.out.println(data.getUserName());
+			String name = r.getString(3);
+			Date birth = r.getDate(4);
+			String address = r.getString(5);
+			data = new Model_User_Account(userID, userName, name, birth, address, checkUserStatus(userID));
 
 		}
 		r.close();

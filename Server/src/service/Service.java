@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.swing.JTextArea;
 
+import org.json.JSONObject;
+
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOClient;
@@ -60,9 +62,10 @@ public class Service {
 				Model_Message message = serviceUser.register(t);
 				ar.sendAckData(message.isAction(), message.getMessage(), message.getData());
 				if (message.isAction()) {
+					Model_User_Account user_account = (Model_User_Account) message.getData();
 					textArea.append("User has Register :" + t.getUserName() + " Pass :" + t.getPassword() + "\n");
-					server.getBroadcastOperations().sendEvent("list_user", (Model_User_Account) message.getData());
-					addClient(sioc, (Model_User_Account) message.getData());
+					server.getBroadcastOperations().sendEvent("list_user", user_account);
+					addClient(sioc, (Model_User_Account) user_account);
 				}
 			}
 		});
@@ -85,10 +88,9 @@ public class Service {
 			public void onData(SocketIOClient sioc, Integer userID, AckRequest ar) throws Exception {
 				try {
 					List<Model_User_Account> list = serviceUser.getUser(userID);
+
 					sioc.sendEvent("list_user", list.toArray());
-					for (Model_User_Account i : list) {
-						System.out.println(i.isStatus());
-					}
+
 				} catch (SQLException e) {
 					System.err.println(e);
 				}

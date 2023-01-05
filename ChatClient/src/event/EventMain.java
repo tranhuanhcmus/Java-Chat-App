@@ -3,7 +3,6 @@ package event;
 import model.Model_User_Account;
 
 public interface EventMain {
-	public void showLoading(boolean show);
 
 	public void initChat();
 

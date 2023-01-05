@@ -7,6 +7,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class Home extends JLayeredPane {
 	private Chat chat;
+	private Menu_left menuLeft;
 
 	public Home() {
 		initComponents();
@@ -15,7 +16,8 @@ public class Home extends JLayeredPane {
 
 	private void init() {
 		setLayout(new MigLayout("fillx, filly", "0[200!]5[fill, 100%]5[]0", "0[fill]0"));
-		this.add(new Menu_left());
+		menuLeft = new Menu_left();
+		this.add(menuLeft);
 		chat = new Chat();
 		this.add(chat);
 
