@@ -68,10 +68,18 @@ public class Model_User_Account {
 		this.status = status;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	private String userName;
 
 	public Model_User_Account(int userID, String userName, String name, String gender, Date birth, String address,
-			boolean status) {
+			boolean status, String email) {
 
 		this.userID = userID;
 		this.userName = userName;
@@ -80,9 +88,11 @@ public class Model_User_Account {
 		this.birth = birth;
 		this.address = address;
 		this.status = status;
+		this.email = email;
 	}
 
-	public Model_User_Account(int userID, String userName, String name, Date birth, String address, boolean status) {
+	public Model_User_Account(int userID, String userName, String name, Date birth, String address, boolean status,
+			String email) {
 
 		this.userID = userID;
 		this.userName = userName;
@@ -91,12 +101,15 @@ public class Model_User_Account {
 		this.birth = birth;
 		this.address = address;
 		this.status = status;
+		this.email = email;
 	}
 
 	private String name;
 	private String gender;
 	private Date birth;
 	private String address;
+	private String email;
+
 	private boolean status;
 
 }

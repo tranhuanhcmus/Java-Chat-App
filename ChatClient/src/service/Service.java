@@ -1,8 +1,11 @@
 package service;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.mail.MessagingException;
 
 import event.PublicEvent;
 import io.socket.client.IO;
@@ -36,16 +39,41 @@ public class Service {
 				public void call(Object... os) {
 					// list user
 					List<Model_User_Account> users = new ArrayList<>();
-					System.out.println("info of: " + user.getUserName());
 					for (Object o : os) {
 						Model_User_Account u = new Model_User_Account(o);
-						System.out.println(u.getUserName() + ": " + u.isStatus());
 						if (u.getUserID() != user.getUserID()) {
 							users.add(u);
 						}
 					}
-					System.out.println("------------------------");
 					PublicEvent.getInstance().getEventMenuLeft().newUser(users);
+				}
+			});
+			client.on("reset_Password", new Emitter.Listener() {
+				@Override
+				public void call(Object... os) {
+					// list user
+
+					String newPassword = (String) os[0];
+					String email = (String) os[1];
+					if (newPassword.equals("error...error")) {
+						PublicEvent.getInstance().getEventLogin().showMessage("Not exist username!");
+					} else {
+
+						// send Email
+
+						String msg = "New Password: " + newPassword;
+						try {
+							SendEmail.send(msg, email);
+						} catch (UnsupportedEncodingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (MessagingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+						PublicEvent.getInstance().getEventLogin().showMessage("Check at : " + email);
+					}
 				}
 			});
 			client.on("user_status", new Emitter.Listener() {
@@ -91,4 +119,5 @@ public class Service {
 	private void error(Exception e) {
 		System.err.println(e);
 	}
+
 }

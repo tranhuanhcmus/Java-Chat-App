@@ -88,7 +88,7 @@ public class P_Register extends JPanel {
 				} else {
 
 					Date date = new Date(System.currentTimeMillis());
-					Model_Register data = new Model_Register(userName, name, address, date, password);
+					Model_Register data = new Model_Register(userName, name, address, date, password, email);
 					PublicEvent.getInstance().getEventLogin().register(data, new EventMessage() {
 						public void callMessage(Model_Message message) {
 							if (!message.isAction()) {

@@ -121,6 +121,11 @@ public class Login extends JPanel {
 				login.lbError.setText(message);
 				login.lbError.setVisible(true);
 			}
+
+			@Override
+			public void forgotPassword(String userName) {
+				Service.getInstance().getClient().emit("reset_Password", userName);
+			}
 		});
 
 	}

@@ -96,6 +96,18 @@ public class Service {
 				}
 			}
 		});
+		server.addEventListener("reset_Password", String.class, new DataListener<String>() {
+
+			@Override
+			public void onData(SocketIOClient sioc, String arg1, AckRequest arg2) throws Exception {
+				// TODO Auto-generated method stub
+
+				List<String> data = serviceUser.resetPassword(arg1);
+
+				sioc.sendEvent("reset_Password", data.toArray());
+
+			}
+		});
 		server.addEventListener("send_to_user", Model_Send_Message.class, new DataListener<Model_Send_Message>() {
 
 			@Override

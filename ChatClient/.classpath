@@ -19,5 +19,7 @@
 	<classpathentry kind="lib" path="C:/Users/Acer/Desktop/dump/client/okhttp-3.12.12.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Acer/Desktop/dump/client/okio-1.15.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Acer/Desktop/dump/client/socket.io-client-1.0.1.jar"/>
+	<classpathentry kind="lib" path="D:/WorkingApp/Eclipse/workspace/ChatAppProject/jars/client/activation.jar"/>
+	<classpathentry kind="lib" path="D:/WorkingApp/Eclipse/workspace/ChatAppProject/jars/client/javax.mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

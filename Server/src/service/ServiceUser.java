@@ -1,5 +1,6 @@
 package service;
 
+import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -7,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import Connection.DatabaseConnection;
 import model.Model_Client;
@@ -56,7 +58,7 @@ public class ServiceUser {
 				p.close();
 				// insert User Account
 				p = con.prepareStatement(
-						"INSERT INTO test.user_account (userid, username,name,address,birth,gender) values (?,?,?,?,?,?)",
+						"INSERT INTO test.user_account (userid, username,name,address,birth,gender,email) values (?,?,?,?,?,?,?)",
 						ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 				p.setInt(1, userid);
 				p.setString(2, data.getUserName());
@@ -64,6 +66,7 @@ public class ServiceUser {
 				p.setString(4, data.getAddress());
 				p.setDate(5, data.getBirth());
 				p.setString(6, "men");
+				p.setString(7, data.getEmail());
 
 				p.execute();
 				p.close();
@@ -72,7 +75,7 @@ public class ServiceUser {
 				message.setAction(true);
 				message.setMessage("Ok");
 				message.setData(new Model_User_Account(userid, data.getUserName(), data.getName(), data.getBirth(),
-						data.getAddress(), true));
+						data.getAddress(), true, data.getEmail()));
 			}
 
 		} catch (SQLException e) {
@@ -96,27 +99,63 @@ public class ServiceUser {
 
 		List<Model_User_Account> list = new ArrayList<>();
 		PreparedStatement p = con.prepareStatement(
-				"select userid, username, name, birth,address from user_account where user_account.status ='1' and userid<>?");
+				"select userid, username, name, birth,address,email from user_account where user_account.status ='1' and userid<>?");
 		p.setInt(1, exitUser);
 		ResultSet r = p.executeQuery();
 		while (r.next()) {
 			int userid = r.getInt(1);
 			String userName = r.getString(2);
 			String name = r.getString(3);
+			String email = r.getString(6);
 
 			Date birth = r.getDate(4);
 			String address = r.getString(5);
-			list.add(new Model_User_Account(userid, userName, name, birth, address, checkUserStatus(userid)));
+			list.add(new Model_User_Account(userid, userName, name, birth, address, checkUserStatus(userid), email));
 		}
 		r.close();
 		p.close();
 		return list;
 	}
 
+	public List<String> resetPassword(String username) throws SQLException {
+
+		PreparedStatement p = con.prepareStatement("select email from user_account where username=?");
+		p.setString(1, username);
+		ResultSet r = p.executeQuery();
+
+		// random password
+		int leftLimit = 97; // letter 'a'
+		int rightLimit = 122; // letter 'z'
+		int targetStringLength = 6;
+		Random random = new Random();
+
+		List<String> result = new ArrayList<>();
+
+		String newPassword = random.ints(leftLimit, rightLimit + 1).limit(targetStringLength)
+				.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+
+		if (r.next()) {
+			String email = r.getString(1);
+
+			p = con.prepareStatement("update user set password=? where username=?");
+			p.setString(1, newPassword);
+			p.setString(2, username);
+			p.execute();
+
+			result.add(newPassword);
+			result.add(email);
+
+			return result;
+		} else
+			result.add("error...error");
+		return result;
+
+	}
+
 	public Model_User_Account login(Model_Login login) throws SQLException {
 		Model_User_Account data = null;
 		PreparedStatement p = con.prepareStatement(
-				"select userid, user_account.username, name, birth,address from user join user_account using (userid) where"
+				"select userid, user_account.username, name, birth,address,email from user join user_account using (userid) where"
 						+ " user.username = BINARY(?) and user.password = BINARY(?) and user_account.status='1'");
 
 		p.setString(1, login.getUserName());
@@ -128,7 +167,8 @@ public class ServiceUser {
 			String name = r.getString(3);
 			Date birth = r.getDate(4);
 			String address = r.getString(5);
-			data = new Model_User_Account(userID, userName, name, birth, address, checkUserStatus(userID));
+			String email = r.getString(6);
+			data = new Model_User_Account(userID, userName, name, birth, address, checkUserStatus(userID), email);
 
 		}
 		r.close();

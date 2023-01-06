@@ -10,6 +10,8 @@ public interface EventLogin {
 
 	public void goRegister();
 
+	public void forgotPassword(String userName);
+
 	public void goLogin();
 
 	public void showMessage(String message);

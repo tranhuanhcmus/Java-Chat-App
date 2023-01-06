@@ -25,6 +25,16 @@ public class Model_User_Account {
 	private String gender;
 	private Date birth;
 	private String address;
+	private String email;
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	private boolean status;
 
 	public String getName() {
@@ -93,6 +103,7 @@ public class Model_User_Account {
 			status = obj.getBoolean("status");
 			name = obj.getString("name");
 			address = obj.getString("address");
+			email = obj.getString("email");
 
 		} catch (JSONException e) {
 			System.err.println(e);

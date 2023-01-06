@@ -74,13 +74,14 @@ public class P_Login extends JPanel {
 		add(cmdRegister);
 
 		JButton btnForgetAccount = new JButton("Forget Account");
+
 		btnForgetAccount.setBounds(10, 187, 251, 23);
 		add(btnForgetAccount);
 
 		lbError = new JLabel("");
 		lbError.setForeground(new Color(255, 0, 0));
 		lbError.setHorizontalAlignment(SwingConstants.CENTER);
-		lbError.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lbError.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lbError.setBounds(20, 208, 232, 36);
 		lbError.setVisible(true);
 		add(lbError);
@@ -91,6 +92,18 @@ public class P_Login extends JPanel {
 		lblNewLabel_4
 				.setImage(new ImageIcon(P_Login.class.getResource("/icon/micah-williams-lmFJOx7hPc4-unsplash.png")));
 		add(lblNewLabel_4);
+
+		btnForgetAccount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String userName = usertxt.getText();
+				if (userName.equals("")) {
+					usertxt.grabFocus();
+				} else {
+					PublicEvent.getInstance().getEventLogin().showMessage("on progress...");
+					PublicEvent.getInstance().getEventLogin().forgotPassword(userName);
+				}
+			}
+		});
 
 	}
 }
