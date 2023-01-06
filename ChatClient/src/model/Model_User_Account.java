@@ -1,6 +1,5 @@
 package model;
 
-import java.text.ParseException;
 import java.sql.Date;
 
 import org.json.JSONException;
@@ -16,6 +15,12 @@ public class Model_User_Account {
 		this.gender = "men";
 		this.birth = birth;
 		this.address = address;
+		this.status = status;
+	}
+
+	public Model_User_Account(String userName, boolean status) {
+
+		this.userName = userName;
 		this.status = status;
 	}
 
