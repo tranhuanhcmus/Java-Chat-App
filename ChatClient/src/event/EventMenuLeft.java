@@ -7,6 +7,8 @@ import model.Model_User_Account;
 public interface EventMenuLeft {
 	public void newUser(List<Model_User_Account> users);
 
+	public void newAddFriend(List<Model_User_Account> users);
+
 	public void userConnect(int userID);
 
 	public void userDisconnect(int userID);

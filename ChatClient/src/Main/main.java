@@ -12,17 +12,16 @@ import java.util.Map;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.WindowConstants;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcIJTheme;
 
-import event.EventImageView;
 import event.EventMain;
 import event.PublicEvent;
 import form.Home;
@@ -59,6 +58,7 @@ public class main extends JFrame {
 		view_Image.setVisible(false);
 		home1.setVisible(false);
 		login.setVisible(true);
+
 		initEvent();
 		Service.getInstance().startServer();
 	}
@@ -71,6 +71,8 @@ public class main extends JFrame {
 				if (!Service.getInstance().getUser().equals(null)) {
 					int userId = Service.getInstance().getUser().getUserID();
 					Service.getInstance().getClient().emit("list_user", userId);
+					Service.getInstance().getClient().emit("list_addfriend",
+							Service.getInstance().getUser().getUserName());
 				}
 				home1.setVisible(true);
 				login.setVisible(false);
@@ -151,34 +153,33 @@ public class main extends JFrame {
 		});
 
 		GroupLayout titleLayout = new GroupLayout(title);
+		titleLayout.setHorizontalGroup(titleLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(titleLayout.createSequentialGroup().addContainerGap(1176, Short.MAX_VALUE)
+						.addComponent(cmdMinimize).addPreferredGap(ComponentPlacement.RELATED).addComponent(cmdClose)
+						.addContainerGap()));
+		titleLayout.setVerticalGroup(titleLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(titleLayout.createSequentialGroup().addGap(0)
+						.addGroup(titleLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(cmdClose, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+								.addComponent(cmdMinimize, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+						.addGap(0)));
 		title.setLayout(titleLayout);
-		titleLayout.setHorizontalGroup(titleLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(
-				GroupLayout.Alignment.TRAILING,
-				titleLayout.createSequentialGroup().addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(cmdMinimize).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(cmdClose).addContainerGap()));
-		titleLayout.setVerticalGroup(titleLayout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(titleLayout
-				.createSequentialGroup().addGap(0, 0, 0)
-				.addGroup(titleLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-						.addComponent(cmdClose, GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
-						.addComponent(cmdMinimize, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-				.addGap(0, 0, 0)));
 		body.setLayout(new CardLayout(0, 0));
 		body.add(home1, "name_520431889883800");
 
 		GroupLayout backgroundLayout = new GroupLayout(background);
-		background.setLayout(backgroundLayout);
-		backgroundLayout.setHorizontalGroup(backgroundLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addComponent(title, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+		backgroundLayout.setHorizontalGroup(backgroundLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(title, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
 						Short.MAX_VALUE)
-				.addGroup(backgroundLayout.createSequentialGroup().addContainerGap()
-						.addComponent(body, GroupLayout.DEFAULT_SIZE, 1210, Short.MAX_VALUE).addContainerGap()));
-		backgroundLayout.setVerticalGroup(backgroundLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(backgroundLayout.createSequentialGroup().addGap(0, 0, 0)
+				.addGroup(backgroundLayout.createSequentialGroup().addGap(10)
+						.addComponent(body, GroupLayout.DEFAULT_SIZE, 1210, Short.MAX_VALUE).addGap(10)));
+		backgroundLayout.setVerticalGroup(backgroundLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(backgroundLayout.createSequentialGroup().addGap(0)
 						.addComponent(title, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 								GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-						.addComponent(body, GroupLayout.DEFAULT_SIZE, 606, Short.MAX_VALUE).addContainerGap()));
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(body, GroupLayout.PREFERRED_SIZE, 631, Short.MAX_VALUE).addContainerGap()));
+		background.setLayout(backgroundLayout);
 
 		view_Image = new View_Image();
 		view_Image.setAutoscrolls(true);

@@ -2,60 +2,78 @@ package event;
 
 public class PublicEvent {
 	private static PublicEvent instance;
-    private EventMain eventMain;
-    private EventImageView eventImageView;
-    private EventChat eventChat;
-    private EventLogin eventLogin;
-    private EventMenuLeft eventMenuLeft;
+	private EventMain eventMain;
+	private EventImageView eventImageView;
+	private EventChat eventChat;
+	private EventLogin eventLogin;
+	private EventAddFriend eventadd;
+	private accepted accept;
+	private EventMenuLeft eventMenuLeft;
 
-    public static PublicEvent getInstance() {
-        if (instance == null) {
-            instance = new PublicEvent();
-        }
-        return instance;
-    }
+	public static PublicEvent getInstance() {
+		if (instance == null) {
+			instance = new PublicEvent();
+		}
+		return instance;
+	}
 
-    private PublicEvent() {
+	private PublicEvent() {
 
-    }
+	}
 
-    public void addEventMain(EventMain event) {
-        this.eventMain = event;
-    }
+	public void addEventMain(EventMain event) {
+		this.eventMain = event;
+	}
 
-    public void addEventImageView(EventImageView event) {
-        this.eventImageView = event;
-    }
+	public void addEventImageView(EventImageView event) {
+		this.eventImageView = event;
+	}
 
-    public void addEventChat(EventChat event) {
-        this.eventChat = event;
-    }
+	public void addEventChat(EventChat event) {
+		this.eventChat = event;
+	}
 
-    public void addEventLogin(EventLogin event) {
-        this.eventLogin = event;
-    }
+	public void addEventExccept(accepted event) {
+		this.accept = event;
+	}
 
-    public void addEventMenuLeft(EventMenuLeft event) {
-        this.eventMenuLeft = event;
-    }
+	public void addEventLogin(EventLogin event) {
+		this.eventLogin = event;
+	}
 
-    public EventMain getEventMain() {
-        return eventMain;
-    }
+	public void addEventAdd(EventAddFriend event) {
+		this.eventadd = event;
+	}
 
-    public EventImageView getEventImageView() {
-        return eventImageView;
-    }
+	public void addEventMenuLeft(EventMenuLeft event) {
+		this.eventMenuLeft = event;
+	}
 
-    public EventChat getEventChat() {
-        return eventChat;
-    }
+	public EventMain getEventMain() {
+		return eventMain;
+	}
 
-    public EventLogin getEventLogin() {
-        return eventLogin;
-    }
+	public EventImageView getEventImageView() {
+		return eventImageView;
+	}
 
-    public EventMenuLeft getEventMenuLeft() {
-        return eventMenuLeft;
-    }
+	public EventChat getEventChat() {
+		return eventChat;
+	}
+
+	public EventAddFriend getEventAdd() {
+		return eventadd;
+	}
+
+	public accepted getEventAccept() {
+		return accept;
+	}
+
+	public EventLogin getEventLogin() {
+		return eventLogin;
+	}
+
+	public EventMenuLeft getEventMenuLeft() {
+		return eventMenuLeft;
+	}
 }

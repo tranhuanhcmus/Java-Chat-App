@@ -48,6 +48,21 @@ public class Service {
 					PublicEvent.getInstance().getEventMenuLeft().newUser(users);
 				}
 			});
+			client.on("list_addfriend", new Emitter.Listener() {
+				@Override
+				public void call(Object... os) {
+					// list user
+					List<Model_User_Account> users = new ArrayList<>();
+					for (Object o : os) {
+						Model_User_Account u = new Model_User_Account(o);
+						if (u.getUserID() != user.getUserID()) {
+							users.add(u);
+						}
+					}
+					PublicEvent.getInstance().getEventMenuLeft().newAddFriend(users);
+
+				}
+			});
 			client.on("reset_Password", new Emitter.Listener() {
 				@Override
 				public void call(Object... os) {
