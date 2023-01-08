@@ -1,11 +1,12 @@
 package service;
 
-import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -184,6 +185,27 @@ public class ServiceUser {
 			}
 		}
 		return false;
+	}
+
+	public boolean writeLog(Model_User_Account a) {
+		PreparedStatement p;
+		try {
+			p = con.prepareStatement("insert into login_history (username,time,name) values (?,?,?)",
+					Statement.RETURN_GENERATED_KEYS);
+
+			p.setString(1, a.getUserName());
+			p.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+			p.setString(3, a.getName());
+
+			p.execute();
+
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+
 	}
 
 }

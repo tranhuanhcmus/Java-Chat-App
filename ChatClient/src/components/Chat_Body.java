@@ -39,6 +39,7 @@ public class Chat_Body extends javax.swing.JPanel {
 		item.setUserProfile(user);
 		body.add(item, "wrap, w 100::80%");
 		// ::80% set max with 80%
+		scrollToBottom();
 		body.repaint();
 		body.revalidate();
 	}
@@ -61,6 +62,7 @@ public class Chat_Body extends javax.swing.JPanel {
 			body.add(item, "wrap, w 100::80%");
 			// ::80% set max with 80%
 		}
+		scrollToBottom();
 		repaint();
 		revalidate();
 	}

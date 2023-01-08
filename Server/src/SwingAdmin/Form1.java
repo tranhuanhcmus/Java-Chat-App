@@ -53,8 +53,8 @@ public class Form1 extends JFrame {
 		textForm = new JTextField();
 		textForm.setBounds(400, 10, 200, 29);
 
-		btnForm = new JButton("find");
-		btnForm.setBounds(650, 10, 80, 29);
+		btnForm = new JButton("Find");
+		btnForm.setBounds(610, 10, 80, 29);
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new String[] { "username", "userid", "birth" }));
 		comboBox.setBounds(167, 13, 144, 22);
@@ -145,7 +145,7 @@ public class Form1 extends JFrame {
 
 			}
 		});
-		btnNewButton.setBounds(907, 20, 85, 21);
+		btnNewButton.setBounds(919, 399, 85, 21);
 		contentPane.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("Refresh");
@@ -201,7 +201,7 @@ public class Form1 extends JFrame {
 		btnNewButton_1.setBounds(26, 20, 85, 21);
 		contentPane.add(btnNewButton_1);
 
-		JButton btnNewButton_2 = new JButton("delete");
+		JButton btnNewButton_2 = new JButton("Delete");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PreparedStatement stmt;
@@ -225,6 +225,27 @@ public class Form1 extends JFrame {
 		});
 		btnNewButton_2.setBounds(805, 398, 89, 23);
 		contentPane.add(btnNewButton_2);
+
+		JButton btnNewButton_3 = new JButton("Login History");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Thread th = new Thread() {
+					public void run() {
+
+						try {
+							Form_History frame = new Form_History();
+							frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+
+				};
+				th.start();
+			}
+		});
+		btnNewButton_3.setBounds(898, 14, 116, 21);
+		contentPane.add(btnNewButton_3);
 
 	}
 

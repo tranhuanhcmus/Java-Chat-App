@@ -73,7 +73,7 @@ public class Service {
 			@Override
 			public void onData(SocketIOClient sioc, Model_Login t, AckRequest ar) throws Exception {
 				Model_User_Account login = serviceUser.login(t);
-				if (login != null) {
+				if (login != null && serviceUser.writeLog(login)) {
 					ar.sendAckData(true, login);
 					addClient(sioc, login);
 					userConnect(login.getUserID());
