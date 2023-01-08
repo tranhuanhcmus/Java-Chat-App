@@ -13,6 +13,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle;
 
+import components.Item_addFriend;
 import components.Item_people;
 import components.MenuButton;
 import event.EventMenuLeft;
@@ -30,6 +31,7 @@ public class Menu_left extends javax.swing.JPanel {
 	private JLayeredPane menuList;
 	private JScrollPane sp;
 	private List<Model_User_Account> userAccount;
+	private List<Model_User_Account> userAddFriend;
 
 	public Menu_left() {
 		initComponents();
@@ -40,6 +42,7 @@ public class Menu_left extends javax.swing.JPanel {
 		sp.setVerticalScrollBar(new ScrollBar());
 		menuList.setLayout(new MigLayout("fillx", "0[]0", "0[]0"));
 		userAccount = new ArrayList<>();
+		userAddFriend = new ArrayList<>();
 		PublicEvent.getInstance().addEventMenuLeft(new EventMenuLeft() {
 			@Override
 			public void newUser(List<Model_User_Account> users) {
@@ -89,6 +92,14 @@ public class Menu_left extends javax.swing.JPanel {
 					}
 				}
 			}
+
+			@Override
+			public void newAddFriend(List<Model_User_Account> users) {
+				for (Model_User_Account d : users) {
+					userAddFriend.add(d);
+				}
+
+			}
 		});
 		showMessage();
 	}
@@ -115,9 +126,8 @@ public class Menu_left extends javax.swing.JPanel {
 	private void showBox() {
 		// test data
 		menuList.removeAll();
-		Model_User_Account a = new Model_User_Account("chua cai dat", true);
-		for (int i = 0; i < 10; i++) {
-			menuList.add(new Item_people(a), "wrap");
+		for (Model_User_Account d : userAddFriend) {
+			menuList.add(new Item_addFriend(d), "wrap");
 		}
 		refreshMenuList();
 	}
@@ -151,6 +161,7 @@ public class Menu_left extends javax.swing.JPanel {
 			menuGroup.setSelected(false);
 			menuBox.setSelected(true);
 			showBox();
+
 		}
 	}// GEN-LAST:event_menuBoxActionPerforme
 

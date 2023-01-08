@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.swing.JTextArea;
 
-import org.json.JSONObject;
-
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOClient;
@@ -16,6 +14,7 @@ import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 
+import model.Model_Addfriend;
 import model.Model_Client;
 import model.Model_Login;
 import model.Model_Message;
@@ -83,6 +82,36 @@ public class Service {
 				}
 			}
 		});
+		server.addEventListener("Add", Model_Addfriend.class, new DataListener<Model_Addfriend>() {
+			@Override
+			public void onData(SocketIOClient sioc, Model_Addfriend t, AckRequest ar) throws Exception {
+				System.out.print(t.getUserName1());
+				System.out.print(t.getUserName2());
+				if (serviceUser.add(t)) {
+
+					ar.sendAckData(true);
+				} else {
+					ar.sendAckData(false);
+				}
+
+			}
+
+		});
+		server.addEventListener("Accept", Model_Addfriend.class, new DataListener<Model_Addfriend>() {
+			@Override
+			public void onData(SocketIOClient sioc, Model_Addfriend t, AckRequest ar) throws Exception {
+				System.out.print(t.getUserName1());
+				System.out.print(t.getUserName2());
+				if (serviceUser.update(t)) {
+
+					ar.sendAckData(true);
+				} else {
+					ar.sendAckData(false);
+				}
+
+			}
+
+		});
 		server.addEventListener("list_user", Integer.class, new DataListener<Integer>() {
 			@Override
 			public void onData(SocketIOClient sioc, Integer userID, AckRequest ar) throws Exception {
@@ -96,6 +125,21 @@ public class Service {
 				}
 			}
 		});
+
+		server.addEventListener("list_addfriend", String.class, new DataListener<String>() {
+			@Override
+			public void onData(SocketIOClient sioc, String userID, AckRequest ar) throws Exception {
+				try {
+					List<Model_User_Account> list = serviceUser.getAddfriend(userID);
+
+					sioc.sendEvent("list_addfriend", list.toArray());
+
+				} catch (SQLException e) {
+					System.err.println(e);
+				}
+			}
+		});
+
 		server.addEventListener("reset_Password", String.class, new DataListener<String>() {
 
 			@Override

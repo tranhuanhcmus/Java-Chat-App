@@ -2,9 +2,6 @@ package model;
 
 import java.util.Date;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class Model_User_Account {
 
 	public Model_User_Account() {
@@ -102,6 +99,11 @@ public class Model_User_Account {
 		this.address = address;
 		this.status = status;
 		this.email = email;
+	}
+
+	public Model_User_Account(String userName) {
+		this.userName = userName;
+
 	}
 
 	private String name;

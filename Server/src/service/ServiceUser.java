@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 import Connection.DatabaseConnection;
+import model.Model_Addfriend;
 import model.Model_Client;
 import model.Model_Login;
 import model.Model_Message;
@@ -118,6 +119,22 @@ public class ServiceUser {
 		return list;
 	}
 
+	public List<Model_User_Account> getAddfriend(String Username) throws SQLException {
+
+		List<Model_User_Account> list = new ArrayList<>();
+		PreparedStatement p = con.prepareStatement(
+				"select username from friends, user_account where username1 = ? and username2 = username and friends.status = 'accept ' ");
+		p.setString(1, Username);
+		ResultSet r = p.executeQuery();
+		while (r.next()) {
+			String userName = r.getString(1);
+			list.add(new Model_User_Account(userName));
+		}
+		r.close();
+		p.close();
+		return list;
+	}
+
 	public List<String> resetPassword(String username) throws SQLException {
 
 		PreparedStatement p = con.prepareStatement("select email from user_account where username=?");
@@ -175,6 +192,36 @@ public class ServiceUser {
 		r.close();
 		p.close();
 		return data;
+	}
+
+	public boolean add(Model_Addfriend a) throws SQLException {
+		PreparedStatement p = con.prepareStatement("select * from user_account where username = ? ");
+		p.setString(1, a.getUserName2());
+		ResultSet r = p.executeQuery();
+		if (r.next()) {
+			p = con.prepareStatement("Insert into friends (username1,username2,status) values (?,?,?) ");
+
+			p.setString(1, a.getUserName1());
+			p.setString(2, a.getUserName2());
+			p.setString(3, "accept ");
+			p.execute();
+			return true;
+
+		}
+
+		return false;
+
+	}
+
+	public boolean update(Model_Addfriend a) throws SQLException {
+		PreparedStatement p = con
+				.prepareStatement("update friends set status = 'be accpeted' where username1 = ? and username2 = ? ");
+		p.setString(1, a.getUserName1());
+		p.setString(2, a.getUserName2());
+		p.execute();
+
+		return true;
+
 	}
 
 	private boolean checkUserStatus(int userID) {
