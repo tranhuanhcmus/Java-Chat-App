@@ -78,12 +78,12 @@ public class Form1 extends JFrame {
 				try {
 
 					PreparedStatement stmt = conn
-							.prepareStatement("select * from user_account WHERE userid = ? or username = ? ");
+							.prepareStatement("select * from user_account WHERE userid = ? or username like ? ");
 					int i = 1;
 
 					stmt.setString(1, textForm.getText());
 
-					stmt.setString(2, textForm.getText());
+					stmt.setString(2, textForm.getText() + "%");
 
 					ResultSet rs = stmt.executeQuery();
 					while (rs.next()) {

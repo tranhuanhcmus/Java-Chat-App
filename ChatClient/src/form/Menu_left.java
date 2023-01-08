@@ -48,9 +48,9 @@ public class Menu_left extends javax.swing.JPanel {
 			public void newUser(List<Model_User_Account> users) {
 				for (Model_User_Account d : users) {
 					userAccount.add(d);
-					menuList.add(new Item_people(d), "wrap");
 					refreshMenuList();
 				}
+				showMessage();
 			}
 
 			@Override
@@ -71,6 +71,7 @@ public class Menu_left extends javax.swing.JPanel {
 						}
 					}
 				}
+				showMessage();
 			}
 
 			@Override
@@ -91,6 +92,7 @@ public class Menu_left extends javax.swing.JPanel {
 						}
 					}
 				}
+				showMessage();
 			}
 
 			@Override
@@ -108,7 +110,9 @@ public class Menu_left extends javax.swing.JPanel {
 		// test data
 		menuList.removeAll();
 		for (Model_User_Account d : userAccount) {
-			menuList.add(new Item_people(d), "wrap");
+			if (d.isStatus()) {
+				menuList.add(new Item_people(d), "wrap");
+			}
 		}
 		refreshMenuList();
 	}
